@@ -2,6 +2,7 @@ import subprocess
 import winapps
 import PySimpleGUI as sg
 import os.path
+import ctypes
 
 file_list_column = [
     [
@@ -25,30 +26,33 @@ layout = [
     ]
 ]
 
+
+def findfile(name, path):
+    for dirpath, dirname, filename in os.walk(path):
+        if name in filename:
+            return os.path.join(dirpath, name)
+        else:
+            ctypes.windll.user32.MessageBoxW(0, "program not found", 1)
+            break
+
+
 window = sg.Window("Startup Script", layout)
 
 while True:
     event, values = window.read()
     if event == "Exit" or event == sg.WIN_CLOSED:
         break
-    # file path input
-    if event == "-File Path-":
-        folder = values["-File Path-"]
-        file_list = []
-    # add button
-        if event == "-Add-":
-            window["-File List-"].update("subprocess.Popen(r'" + folder + "')")
-            print("worked")
 
-    elif event == "-File List-":  # A file was chosen from the listbox
-        try:
-            filename = os.path.join(
-                values["-File Path-"], values["-File List-"][0]
-            )
-            window["-TOUT-"].update(filename)
-            window["-IMAGE-"].update(filename=filename)
-        except:
-            pass
+    if event == "-AddButton-":
+        filename = values["-File Path-"]
+        print(filename)
+        if filename != "[]":
+            filePath = findfile(filename, "/")
+            window["-File List-"].update(filePath)
+        else:
+            print("failed")
+        print("worked")
+
 window.close()
 
 # subprocess.Popen(r"C:\Users\templ\AppData\Local\Discord\app-1.0.9004\Discord.exe")
