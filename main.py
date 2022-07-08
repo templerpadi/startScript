@@ -49,17 +49,20 @@ while True:
     elif event == "-create-":
         print("create")
         for inputs in file_list:
-            subInput = "subprocessFile.Popen(r" + inputs + ")\n"
+            subInput = "subprocess.Popen(r'" + inputs + "')\n"
             print("added to file")
-            filename = "subprocessFile" + str(subnum) + ".py"
+            filename = "subprocess" + str(subnum) + ".py"
             if not os.path.exists(filename):
                 f = open(filename, "x")
+                f.write("import subprocess\n")
                 f.write(subInput)
                 f.close()
                 subnum = subnum + 1
             else:
                 subnum = subnum + 1
         installPath = os.path.abspath(filename)
-        os.system("PyInstaller" + installPath)
+        os.system('cmd /k"PyInstaller" + installPath')
 
 window.close()
+# subprocess.Popen(r"C:\Users\templ\AppData\Local\Discord\app-1.0.9004\Discord.exe")
+# subprocess.Popen(r"C:\Program Files (x86)\Steam\Steam.exe")
