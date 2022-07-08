@@ -1,3 +1,7 @@
+import string
+
+import PyInstaller
+
 import subprocess
 import winapps
 import PySimpleGUI as sg
@@ -26,34 +30,36 @@ layout = [
     ]
 ]
 
-
-def findfile(name, path):
-    for dirpath, dirname, filename in os.walk(path):
-        if name in filename:
-            return os.path.join(dirpath, name)
-        else:
-            ctypes.windll.user32.MessageBoxW(0, "program not found", 1)
-            break
-
-
 window = sg.Window("Startup Script", layout)
+subInput = ""
+subnum = 0
+file_list = []
 
 while True:
     event, values = window.read()
     if event == "Exit" or event == sg.WIN_CLOSED:
         break
-
-    if event == "-AddButton-":
-        filename = values["-File Path-"]
-        print(filename)
-        if filename != "[]":
-            filePath = findfile(filename, "/")
-            window["-File List-"].update(filePath)
-        else:
-            print("failed")
-        print("worked")
+    elif event == "-AddButton-":
+        new_filename = values["-File Path-"].strip()
+        if new_filename not in file_list:
+            file_list = sorted(file_list + [new_filename])
+            print(file_list)
+            values = file_list
+            window["-File List-"].update(values)
+    elif event == "-create-":
+        print("create")
+        for inputs in file_list:
+            subInput = "subprocessFile.Popen(r" + inputs + ")\n"
+            print("added to file")
+            filename = "subprocessFile" + str(subnum) + ".py"
+            if not os.path.exists(filename):
+                f = open(filename, "x")
+                f.write(subInput)
+                f.close()
+                subnum = subnum + 1
+            else:
+                subnum = subnum + 1
+        installPath = os.path.abspath(filename)
+        os.system("PyInstaller" + installPath)
 
 window.close()
-
-# subprocess.Popen(r"C:\Users\templ\AppData\Local\Discord\app-1.0.9004\Discord.exe")
-# subprocess.Popen(r"C:\Program Files (x86)\Steam\Steam.exe")
