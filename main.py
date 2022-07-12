@@ -1,3 +1,4 @@
+import shutil
 import string
 
 import PyInstaller
@@ -46,22 +47,20 @@ while True:
             print(file_list)
             values = file_list
             window["-File List-"].update(values)
-    elif event == "-create-":
-        print("create")
         for inputs in file_list:
             subInput = "subprocess.Popen(r'" + inputs + "')\n"
             print("added to file")
-            filename = "subprocess" + str(subnum) + ".py"
-            if not os.path.exists(filename):
-                f = open(filename, "x")
-                f.write("import subprocess\n")
-                f.write(subInput)
-                f.close()
-                subnum = subnum + 1
-            else:
-                subnum = subnum + 1
+        filename = "subprocess" + str(subnum) + ".py"
+        if not os.path.exists(filename):
+            f = open(filename, "x")
+            f.write("import subprocess\n")
+            f.write(new_filename)
+            f.close()
+    elif event == "-create-":
+        print("create")
         installPath = os.path.abspath(filename)
-        os.system('cmd /k"PyInstaller" + installPath')
+        os.system('cmd /k"PyInstaller" ' + installPath)
+        subnum = subnum + 1
 
 window.close()
 # subprocess.Popen(r"C:\Users\templ\AppData\Local\Discord\app-1.0.9004\Discord.exe")
