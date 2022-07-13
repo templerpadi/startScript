@@ -46,11 +46,10 @@ while True:
     elif event == "-AddButton-":
         new_filename = values["-File Path-"].strip()
         filename = values["-FileName-"].strip() + ".py"
-        if new_filename not in file_list:
-            file_list = sorted(file_list + [new_filename])
-            print(file_list)
-            values = file_list
-            window["-File List-"].update(values)
+        file_list = sorted(file_list + [new_filename])
+        print(file_list)
+        values = file_list
+        window["-File List-"].update(values)
         for inputs in values:
             subInput = "subprocess.Popen(r'" + inputs + "')\n"
             print("added to file")
