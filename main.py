@@ -4,12 +4,15 @@ import string
 import PyInstaller
 
 import subprocess
-import winapps
 import PySimpleGUI as sg
 import os.path
 import ctypes
 
 file_list_column = [
+    [
+        sg.Text("FileName"),
+        sg.In(size=(25,1), enable_events=True, key = "-FileName-"),
+    ],
     [
         sg.Text("File Path"),
         sg.In(size=(25, 1), enable_events=True, key="-File Path-"),
@@ -42,6 +45,7 @@ while True:
         break
     elif event == "-AddButton-":
         new_filename = values["-File Path-"].strip()
+        filename = values["-FileName-"].strip() + ".py"
         if new_filename not in file_list:
             file_list = sorted(file_list + [new_filename])
             print(file_list)
@@ -50,11 +54,10 @@ while True:
         for inputs in file_list:
             subInput = "subprocess.Popen(r'" + inputs + "')\n"
             print("added to file")
-        filename = "subprocess" + str(subnum) + ".py"
         if not os.path.exists(filename):
             f = open(filename, "x")
             f.write("import subprocess\n")
-            f.write(new_filename)
+            f.write(subInput)
             f.close()
     elif event == "-create-":
         print("create")
