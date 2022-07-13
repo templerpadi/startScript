@@ -51,7 +51,7 @@ while True:
             print(file_list)
             values = file_list
             window["-File List-"].update(values)
-        for inputs in file_list:
+        for inputs in values:
             subInput = "subprocess.Popen(r'" + inputs + "')\n"
             print("added to file")
         if not os.path.exists(filename):
