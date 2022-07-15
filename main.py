@@ -1,17 +1,11 @@
-import shutil
-import string
-
-import PyInstaller
-
-import subprocess
-import PySimpleGUI as sg
 import os.path
-import ctypes
+
+import PySimpleGUI as sg
 
 file_list_column = [
     [
         sg.Text("FileName"),
-        sg.In(size=(25,1), enable_events=True, key = "-FileName-"),
+        sg.In(size=(25, 1), enable_events=True, key="-FileName-"),
     ],
     [
         sg.Text("File Path"),
